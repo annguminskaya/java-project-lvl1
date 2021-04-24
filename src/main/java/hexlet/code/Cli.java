@@ -9,10 +9,12 @@ import java.util.Scanner;
  */
 public class Cli {
 
-    public static void makeGreeting(InputStream inputStream) {
+    public static String getName(InputStream inputStream) {
+        System.out.println("Welcome to the Brain Games!");
         System.out.println("May I have your name?");
         Scanner scanner = new Scanner(inputStream);
         final var name = scanner.nextLine();
         System.out.println(String.format("Hello, %s!", name));
+        return name;
     }
 }
