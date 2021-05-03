@@ -14,7 +14,7 @@ import java.util.Random;
 public final class Progression implements Engine {
 
     private static final int PROGRESSION_MIN_SIZE = 5;
-    private static final int PROGRESSION_MAX_SIZE = 5;
+    private static final int PROGRESSION_BOUND_SIZE = 10;
     private static final int PROGRESSION_MAX_STEP = 10;
     private static final int PROGRESSION_MAX_START_ELEMENT = 20;
 
@@ -31,16 +31,16 @@ public final class Progression implements Engine {
 
     @Override
     public boolean playGame() {
-        int progressionLength = new Random().nextInt(PROGRESSION_MIN_SIZE) + PROGRESSION_MAX_SIZE;
+        int progressionLength = new Random().nextInt(PROGRESSION_BOUND_SIZE) + PROGRESSION_MIN_SIZE;
         int progressionDifference = new Random().nextInt(PROGRESSION_MAX_STEP);
         var progression = generateProgression(progressionLength, progressionDifference);
-        int positionToHide = new Random().nextInt(progressionLength - 1);
+        int positionToHide = new Random().nextInt(progressionLength - 1) + 1;
         int hiddenValue = progression.get(positionToHide);
         progression.set(positionToHide, null);
         System.out.print("Question: ");
         for (Integer element: progression) {
             if (element == null) {
-                System.out.print("... ");
+                System.out.print(".. ");
             } else {
                 System.out.print(element + " ");
             }
@@ -64,7 +64,7 @@ public final class Progression implements Engine {
         List<Integer> progression = new ArrayList<>();
         progression.add(startPosition);
         int currentElement = startPosition;
-        for (int i = 1; i < length - 1; i++) {
+        for (int i = 1; i < length; i++) {
             currentElement = currentElement + difference;
             progression.add(currentElement);
         }
