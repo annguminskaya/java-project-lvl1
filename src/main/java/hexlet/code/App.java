@@ -1,44 +1,38 @@
 package hexlet.code;
 
+import hexlet.code.games.Calc;
 import hexlet.code.games.Even;
+import hexlet.code.games.GCD;
+import hexlet.code.games.Progression;
+import hexlet.code.games.Prime;
 
-import java.util.Scanner;
+import java.util.List;
 
 public class App {
 
-    private static final Integer TRIES = 3;
-
     public static void main(String[] args) {
+        List<Engine> engines = List.of(new Even(), new Calc(), new GCD(), new Progression(), new Prime());
         System.out.println("Please enter the game number and press Enter.");
-        System.out.println("1 - Greet\n"
-                +
-                "2 - Even\n"
-                +
-                "0 - Exit");
+        System.out.println("1 - Greeting");
+        for (int i = 0; i < engines.size(); i++) {
+            System.out.println(i + 2 + " - " + engines.get(i).getName());
+        }
+        System.out.println("0 - Exit");
         System.out.println("Your choice: ");
-        Scanner scanner = new Scanner(System.in);
-        final var answer = scanner.nextInt();
+        final int answer = Cli.getInteger(System.in);
+        if (answer > engines.size() + 1 || answer < 0) {
+            System.out.println("Wrong menu choice!");
+            System.exit(1);
+        }
         String userName;
-        switch (answer) {
-            case 1:
-                Cli.getName(System.in);
-                break;
-            case 2:
-                userName = Cli.getName(System.in);
-                boolean result = false;
-                for (int i = 0; i < TRIES; i++) {
-                    result = Even.isEven(System.in);
-                    if (!result) {
-                        System.out.println(String.format("Let's try again, %s!", userName));
-                        break;
-                    }
+        if (answer != 0) {
+            userName = Cli.getName(System.in);
+            if (answer != 1) {
+                var game = engines.get(answer - 2);
+                if (game != null) {
+                    game.startGame(userName);
                 }
-                if (result) {
-                    System.out.println(String.format("Congratulations, %s!", userName));
-                }
-                break;
-            default:
-                System.out.println("Bye!");
+            }
         }
     }
 }

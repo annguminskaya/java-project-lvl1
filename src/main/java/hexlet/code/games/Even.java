@@ -1,25 +1,35 @@
 package hexlet.code.games;
 
-import java.io.InputStream;
+import hexlet.code.Cli;
+import hexlet.code.Engine;
+
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * @author aguminskaya
  * @since 23.04.2021
  */
-public class Even {
+public final class Even implements Engine {
 
-    private static final String YES = "yes";
-    private static final String NO = "no";
+    private static final Integer RANDOM_BOUND = 10_000;
 
-    public static boolean isEven(InputStream inputStream) {
-        final var number = new Random().nextInt(10_000);
+    @Override
+    public String getName() {
+        return "Even";
+    }
+
+    @Override
+    public void startGame(String userName) {
         System.out.println(String.format("Answer '%s' if the number is even, otherwise answer '%s'.", YES, NO));
+        startGameSession(userName);
+    }
+
+    @Override
+    public boolean playGame() {
+        final var number = new Random().nextInt(RANDOM_BOUND);
         System.out.println(String.format("Question: %d", number));
-        System.out.print("Your answer: ");
-        Scanner scanner = new Scanner(inputStream);
-        final var answer = scanner.nextLine();
+        System.out.print(ANSWER_PATTERN);
+        final var answer = Cli.getString(System.in);
         final var isEven = number % 2 == 0;
         if ((isEven && answer.toLowerCase().equals(YES))
                 || (!isEven && answer.toLowerCase().equals(NO))) {
