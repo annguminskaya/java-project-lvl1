@@ -23,6 +23,7 @@ public final class Progression implements Engine {
         return "Progression";
     }
 
+
     @Override
     public void startGame(String userName) {
         System.out.println("What number is missing in the progression?");
