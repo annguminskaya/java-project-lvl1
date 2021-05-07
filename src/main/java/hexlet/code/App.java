@@ -30,7 +30,7 @@ public class App {
     private static void startGameByName(String name, String userName) {
         switch (name) {
             case "Greeting": break;
-            case Even.NAME: Even.playGame(userName);
+            case Even.NAME: Even.playGame(userName); break;
             case Calc.NAME: Calc.playGame(userName); break;
             case GCD.NAME: GCD.playGame(userName); break;
             case Progression.NAME: Progression.playGame(userName); break;
