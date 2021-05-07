@@ -1,73 +1,54 @@
 package hexlet.code.games;
 
-import hexlet.code.Cli;
 import hexlet.code.Engine;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
  * @author aguminskaya
  * @since 02.05.2021
  */
-public final class Progression implements Engine {
+public final class Progression {
+
 
     private static final int PROGRESSION_MIN_SIZE = 5;
     private static final int PROGRESSION_BOUND_SIZE = 10;
     private static final int PROGRESSION_MAX_STEP = 10;
     private static final int PROGRESSION_MAX_START_ELEMENT = 20;
 
-    @Override
-    public String getName() {
-        return "Progression";
+    public static final String NAME = "Progression";
+
+    public static void playGame(String userName) {
+        String[] questions = new String[Engine.RETRY_COUNT];
+        String[] answers = new String[Engine.RETRY_COUNT];
+        for (int i = 0; i < Engine.RETRY_COUNT; i++) {
+            int length = new Random().nextInt(PROGRESSION_BOUND_SIZE) + PROGRESSION_MIN_SIZE;
+            int step = new Random().nextInt(PROGRESSION_MAX_STEP);
+            int firstElement = new Random().nextInt(PROGRESSION_MAX_START_ELEMENT);
+            int positionToHide = new Random().nextInt(length - 1) + 1;
+            var progression = generateProgression(firstElement, length, step);
+            var hiddenValue = progression[positionToHide];
+            answers[i] = String.valueOf(hiddenValue);
+            questions[i] = convertToString(progression, positionToHide);
+        }
+        Engine.startGame("What number is missing in the progression?", userName, questions, answers);
     }
 
-
-    @Override
-    public void startGame(String userName) {
-        System.out.println("What number is missing in the progression?");
-        startGameSession(userName);
-    }
-
-    @Override
-    public boolean playGame() {
-        int progressionLength = new Random().nextInt(PROGRESSION_BOUND_SIZE) + PROGRESSION_MIN_SIZE;
-        int progressionDifference = new Random().nextInt(PROGRESSION_MAX_STEP);
-        var progression = generateProgression(progressionLength, progressionDifference);
-        int positionToHide = new Random().nextInt(progressionLength - 1) + 1;
-        int hiddenValue = progression.get(positionToHide);
-        progression.set(positionToHide, null);
-        System.out.print("Question: ");
-        for (Integer element: progression) {
-            if (element == null) {
-                System.out.print(".. ");
+    private static String convertToString(int[] progression, int positionToHide) {
+        var builder = new StringBuilder();
+        for (int i = 0; i < progression.length; i++) {
+            if (i == positionToHide) {
+                builder.append(".. ");
             } else {
-                System.out.print(element + " ");
+                builder.append(progression[i]).append(" ");
             }
         }
-        System.out.println();
-        System.out.print(ANSWER_PATTERN);
-        final var answer = Cli.getInteger(System.in);
-        if (answer == hiddenValue) {
-            System.out.println("Correct!");
-            return true;
-        } else {
-            System.out.println(
-                    String.format(WRONG_ANSWER_PATTERN,
-                            answer, hiddenValue));
-            return false;
-        }
+        return builder.toString();
     }
-
-    private List<Integer> generateProgression(int length, int difference) {
-        int startPosition = new Random().nextInt(PROGRESSION_MAX_START_ELEMENT);
-        List<Integer> progression = new ArrayList<>();
-        progression.add(startPosition);
-        int currentElement = startPosition;
-        for (int i = 1; i < length; i++) {
-            currentElement = currentElement + difference;
-            progression.add(currentElement);
+    private static int[] generateProgression(int firstElement, int length, int step) {
+        int[] progression = new int[length];
+        for (int i = 0; i < length; i++) {
+            progression[i] = firstElement + i * step;
         }
         return progression;
     }
