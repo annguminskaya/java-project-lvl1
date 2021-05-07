@@ -32,14 +32,10 @@ public final class Prime {
     }
 
     private static boolean isPrime(int number) {
-        if (number == 2 || number == 3) {
-            return true;
-        }
-        if (number % 2 == 0) {
+        if (number <= 1) {
             return false;
         }
-        int sqrt = (int) Math.sqrt(number) + 1;
-        for (int i = 3; i < sqrt; i += 2) {
+        for (int i = 2; i <= Math.sqrt(number); i++) {
             if (number % i == 0) {
                 return false;
             }
