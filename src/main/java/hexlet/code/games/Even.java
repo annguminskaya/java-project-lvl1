@@ -10,20 +10,20 @@ import java.util.Random;
  */
 public final class Even {
 
-    private static final Integer RANDOM_BOUND = 10_000;
+    public static final String NAME = "Even";
+
     private static final String YES = "yes";
     private static final String NO = "no";
-    public static final String NAME = "Even";
 
     public static void playGame(String userName) {
         String[] questions = new String[Engine.RETRY_COUNT];
         String[] answers = new String[Engine.RETRY_COUNT];
         for (int i = 0; i < Engine.RETRY_COUNT; i++) {
-            final var n = new Random().nextInt(RANDOM_BOUND);
+            final var n = new Random().nextInt(10_000);
             if (isEven(n)) {
-                answers[i] = "yes";
+                answers[i] = YES;
             } else {
-                answers[i] = "no";
+                answers[i] = NO;
             }
             questions[i] = String.valueOf(n);
         }

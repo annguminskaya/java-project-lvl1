@@ -11,12 +11,12 @@ import java.util.Random;
 public final class Progression {
 
 
+    public static final String NAME = "Progression";
+
     private static final int PROGRESSION_MIN_SIZE = 5;
     private static final int PROGRESSION_BOUND_SIZE = 10;
     private static final int PROGRESSION_MAX_STEP = 10;
     private static final int PROGRESSION_MAX_START_ELEMENT = 20;
-
-    public static final String NAME = "Progression";
 
     public static void playGame(String userName) {
         String[] questions = new String[Engine.RETRY_COUNT];

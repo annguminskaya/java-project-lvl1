@@ -12,7 +12,6 @@ public final class GCD {
 
     public static final String NAME = "GCD";
 
-
     public static void playGame(String userName) {
         String[] questions = new String[Engine.RETRY_COUNT];
         String[] answers = new String[Engine.RETRY_COUNT];

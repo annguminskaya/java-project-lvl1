@@ -10,11 +10,11 @@ import java.util.Random;
  */
 public final class Calc {
 
+    public static final String NAME = "Calculator";
+
     private static final String PLUS = "+";
     private static final String MINUS = "-";
     private static final String MULTIPLY = "*";
-
-    public static final String NAME = "Calculator";
 
     private static final String[] OPERATION_LIST = {PLUS, MINUS, MULTIPLY};
 

@@ -7,15 +7,13 @@ package hexlet.code;
 public class Engine {
 
     public static final Integer RETRY_COUNT = 3;
-    public static final String WRONG_ANSWER_PATTERN = "\'%s\' is wrong answer ;(. Correct answer was \'%s\'.";
-    public static final String ANSWER_PATTERN = "Your answer: ";
 
     public static void startGame(String gameDescription, String userName, String[] questions, String[] correctAnswers) {
         Cli.printlnMessage(gameDescription);
         boolean roundResult = false;
         for (int i = 0; i < questions.length; i++) {
             Cli.printlnMessage(String.format("Question: %s", questions[i]));
-            Cli.printMessage(ANSWER_PATTERN);
+            Cli.printMessage("Your answer: ");
             final var answer = Cli.getInput(System.in);
             roundResult = checkAnswer(answer, correctAnswers[i]);
             if (!roundResult) {
@@ -33,7 +31,8 @@ public class Engine {
             Cli.printlnMessage("Correct!");
             return true;
         } else {
-            Cli.printlnMessage(String.format(WRONG_ANSWER_PATTERN, answer, correctAnswer));
+            Cli.printlnMessage(String.format("\'%s\' is wrong answer ;(. Correct answer was \'%s\'.",
+                    answer, correctAnswer));
             return false;
         }
     }

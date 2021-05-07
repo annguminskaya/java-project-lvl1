@@ -10,20 +10,20 @@ import java.util.Random;
  */
 public final class Prime {
 
+    public static final String NAME = "Prime";
+
     private static final String YES = "yes";
     private static final String NO = "no";
-    private static final int PRIME_MAX_NUMBER = 100;
-    public static final String NAME = "Prime";
 
     public static void playGame(String userName) {
         String[] questions = new String[Engine.RETRY_COUNT];
         String[] answers = new String[Engine.RETRY_COUNT];
         for (int i = 0; i < Engine.RETRY_COUNT; i++) {
-            final var n = new Random().nextInt(PRIME_MAX_NUMBER);
+            final var n = new Random().nextInt(100);
             if (isPrime(n)) {
-                answers[i] = "yes";
+                answers[i] = YES;
             } else {
-                answers[i] = "no";
+                answers[i] = NO;
             }
             questions[i] = String.valueOf(n);
         }
