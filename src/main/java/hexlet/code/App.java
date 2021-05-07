@@ -14,7 +14,7 @@ public class App {
         for (int i = 0; i < menuList.length; i++) {
             Cli.printlnMessage((i + 1) + " - " + menuList[i]);
         }
-        Cli.printlnMessage("0 - Exit\n");
+        Cli.printlnMessage("0 - Exit");
         final int answer = Integer.parseInt(Cli.getInput(System.in));
         if (answer > menuList.length || answer < 0) {
             Cli.printlnMessage("Wrong menu choice!");
