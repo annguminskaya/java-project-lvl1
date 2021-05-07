@@ -4,48 +4,38 @@ package hexlet.code;
  * @author aguminskaya
  * @since 24.04.2021
  */
-public interface Engine {
+public class Engine {
 
-    Integer RETRY_COUNT = 3;
-    String WRONG_ANSWER_PATTERN = "\'%s\' is wrong answer ;(. Correct answer was \'%s\'.";
-    String ANSWER_PATTERN = "Your answer: ";
+    public static final Integer RETRY_COUNT = 3;
+    public static final String WRONG_ANSWER_PATTERN = "\'%s\' is wrong answer ;(. Correct answer was \'%s\'.";
+    public static final String ANSWER_PATTERN = "Your answer: ";
 
-    String YES = "yes";
-    String NO = "no";
-
-    /**
-     * Печатает условия игры и стартует сессию игры.
-     * @param userName - имя игрока
-     */
-    void startGame(String userName);
-
-    /**
-     * Следит за количеством попыток игры и результатом.
-     * @param userName - имя игрока
-     */
-    default void startGameSession(String userName) {
-        boolean result = false;
-        for (int i = 0; i < RETRY_COUNT; i++) {
-            result = playGame();
-            if (!result) {
-                System.out.println(String.format("Let's try again, %s!", userName));
+    public static void startGame(String gameDescription, String userName, String[] questions, String[] correctAnswers) {
+        Cli.printlnMessage(gameDescription);
+        boolean roundResult = false;
+        for (int i = 0; i < questions.length; i++) {
+            Cli.printlnMessage(String.format("Question: %s", questions[i]));
+            Cli.printMessage(ANSWER_PATTERN);
+            final var answer = Cli.getInput(System.in);
+            roundResult = checkAnswer(answer, correctAnswers[i]);
+            if (!roundResult) {
+                Cli.printlnMessage(String.format("Let's try again, %s!", userName));
                 break;
             }
         }
-        if (result) {
-            System.out.println(String.format("Congratulations, %s!", userName));
+        if (roundResult) {
+            Cli.printlnMessage(String.format("Congratulations, %s!", userName));
         }
     }
 
-    /**
-     * Запускает непосредственно игру.
-     * @return - результат игры. True - правильно, false - неправильно
-     */
-    boolean playGame();
-
-    /**
-     * @return имя игры
-     */
-    String getName();
+    private static boolean checkAnswer(String answer, String correctAnswer) {
+        if (answer.toLowerCase().equals(correctAnswer.toLowerCase())) {
+            Cli.printlnMessage("Correct!");
+            return true;
+        } else {
+            Cli.printlnMessage(String.format(WRONG_ANSWER_PATTERN, answer, correctAnswer));
+            return false;
+        }
+    }
 
 }

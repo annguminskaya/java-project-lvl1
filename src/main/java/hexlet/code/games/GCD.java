@@ -1,6 +1,5 @@
 package hexlet.code.games;
 
-import hexlet.code.Cli;
 import hexlet.code.Engine;
 
 import java.util.Random;
@@ -9,39 +8,24 @@ import java.util.Random;
  * @author aguminskaya
  * @since 02.05.2021
  */
-public final class GCD implements Engine {
+public final class GCD {
 
-    @Override
-    public String getName() {
-        return "GCD";
-    }
+    public static final String NAME = "GCD";
 
-    @Override
-    public void startGame(String userName) {
-        System.out.println("Find the greatest common divisor of given numbers.");
-        startGameSession(userName);
-    }
 
-    @Override
-    public boolean playGame() {
-        final var op1 = new Random().nextInt(100);
-        final var op2 = new Random().nextInt(100);
-        System.out.println(String.format("Question: %d %d", op1, op2));
-        System.out.print(ANSWER_PATTERN);
-        final var answer = Cli.getInteger(System.in);
-        final var result = gcdByEuclidsAlgorithm(op1, op2);
-        if (result == answer) {
-            System.out.println("Correct!");
-            return true;
-        } else {
-            System.out.println(
-                    String.format(WRONG_ANSWER_PATTERN,
-                            answer, result));
-            return false;
+    public static void playGame(String userName) {
+        String[] questions = new String[Engine.RETRY_COUNT];
+        String[] answers = new String[Engine.RETRY_COUNT];
+        for (int i = 0; i < Engine.RETRY_COUNT; i++) {
+            final var op1 = new Random().nextInt(100);
+            final var op2 = new Random().nextInt(100);
+            answers[i] = String.valueOf(gcdByEuclidsAlgorithm(op1, op2));
+            questions[i] = String.format("%d %d", op1, op2);
         }
+        Engine.startGame("Find the greatest common divisor of given numbers.", userName, questions, answers);
     }
 
-    int gcdByEuclidsAlgorithm(int n1, int n2) {
+    private static int gcdByEuclidsAlgorithm(int n1, int n2) {
         if (n2 == 0) {
             return n1;
         }

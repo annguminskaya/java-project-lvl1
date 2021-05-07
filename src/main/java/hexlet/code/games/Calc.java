@@ -1,64 +1,45 @@
 package hexlet.code.games;
 
-import hexlet.code.Cli;
 import hexlet.code.Engine;
 
-import java.util.List;
 import java.util.Random;
 
 /**
  * @author aguminskaya
  * @since 24.04.2021
  */
-public final class Calc implements Engine {
+public final class Calc {
 
     private static final String PLUS = "+";
     private static final String MINUS = "-";
     private static final String MULTIPLY = "*";
 
+    public static final String NAME = "Calculator";
 
-    private final List<String> operationList = List.of(PLUS, MINUS, MULTIPLY);
+    private static final String[] OPERATION_LIST = {PLUS, MINUS, MULTIPLY};
 
-    @Override
-    public String getName() {
-        return "Calculator";
+    public static void playGame(String userName) {
+        String[] questions = new String[Engine.RETRY_COUNT];
+        String[] answers = new String[Engine.RETRY_COUNT];
+        for (int i = 0; i < Engine.RETRY_COUNT; i++) {
+            final var op1 = new Random().nextInt(100);
+            final var op2 = new Random().nextInt(100);
+            final var operation = OPERATION_LIST[new Random().nextInt(OPERATION_LIST.length)];
+            answers[i] = String.valueOf(doMathOperation(operation, op1, op2));
+            questions[i] = String.format("%d %s %d", op1, operation, op2);
+        }
+        Engine.startGame("What is the result of the expression?", userName, questions, answers);
     }
 
-    @Override
-    public void startGame(String userName) {
-        System.out.println("What is the result of the expression?");
-        startGameSession(userName);
-    }
-
-    @Override
-    public boolean playGame() {
-        final var op1 = new Random().nextInt(100);
-        final var op2 = new Random().nextInt(100);
-        final var operation = operationList.get(new Random().nextInt(operationList.size()));
-        System.out.println(String.format("Question: %d %s %d", op1, operation, op2));
-        System.out.print("Your answer: ");
-        final var answer = Cli.getString(System.in);
-        Integer opResult = 0;
+    private static int doMathOperation(String operation, int op1, int op2) {
         switch (operation) {
             case PLUS:
-                opResult = op1 + op2;
-                break;
+                return op1 + op2;
             case MINUS:
-                opResult = op1 - op2;
-                break;
+                return op1 - op2;
             case MULTIPLY:
-                opResult = op1 * op2;
-                break;
+                return op1 * op2;
             default: throw new IllegalArgumentException("Operation " + operation + " does't exist!");
-        }
-        if (opResult.equals(Integer.valueOf(answer))) {
-            System.out.println("Correct!");
-            return true;
-        } else {
-            System.out.println(
-                    String.format(WRONG_ANSWER_PATTERN,
-                            answer, opResult));
-            return false;
         }
     }
 }

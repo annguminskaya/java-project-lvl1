@@ -1,6 +1,5 @@
 package hexlet.code.games;
 
-import hexlet.code.Cli;
 import hexlet.code.Engine;
 
 import java.util.Random;
@@ -9,37 +8,30 @@ import java.util.Random;
  * @author aguminskaya
  * @since 23.04.2021
  */
-public final class Even implements Engine {
+public final class Even {
 
     private static final Integer RANDOM_BOUND = 10_000;
+    private static final String YES = "yes";
+    private static final String NO = "no";
+    public static final String NAME = "Even";
 
-    @Override
-    public String getName() {
-        return "Even";
-    }
-
-    @Override
-    public void startGame(String userName) {
-        System.out.println(String.format("Answer '%s' if the number is even, otherwise answer '%s'.", YES, NO));
-        startGameSession(userName);
-    }
-
-    @Override
-    public boolean playGame() {
-        final var number = new Random().nextInt(RANDOM_BOUND);
-        System.out.println(String.format("Question: %d", number));
-        System.out.print(ANSWER_PATTERN);
-        final var answer = Cli.getString(System.in);
-        final var isEven = number % 2 == 0;
-        if ((isEven && answer.toLowerCase().equals(YES))
-                || (!isEven && answer.toLowerCase().equals(NO))) {
-            System.out.println("Correct!");
-            return true;
-        } else {
-            System.out.println(
-                    String.format("\'%s\' is wrong answer ;(. Correct answer was \'%s\'.",
-                            answer, isEven ? YES : NO));
-            return false;
+    public static void playGame(String userName) {
+        String[] questions = new String[Engine.RETRY_COUNT];
+        String[] answers = new String[Engine.RETRY_COUNT];
+        for (int i = 0; i < Engine.RETRY_COUNT; i++) {
+            final var n = new Random().nextInt(RANDOM_BOUND);
+            if (isEven(n)) {
+                answers[i] = "yes";
+            } else {
+                answers[i] = "no";
+            }
+            questions[i] = String.valueOf(n);
         }
+        Engine.startGame(String.format("Answer '%s' if the number is even, otherwise answer '%s'.", YES, NO),
+                userName, questions, answers);
+    }
+
+    private static boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
